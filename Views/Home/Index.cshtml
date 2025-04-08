@@ -1,8 +1,412 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
+    Layout = null;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G&R - Dashboard de Administrador</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-green: #4CAF50;
+            --dark-green: #3e8e41;
+            --light-bg: #d8e8db;
+            --sidebar-width: 140px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #d8e8db;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .header {
+            background-color: var(--light-bg);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #c0d8c4;
+        }
+
+        .logo {
+            color: var(--main-green);
+            font-weight: bold;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            background-color: var(--main-green);
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            margin-right: 10px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #757575;
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ccc;
+            overflow: hidden;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            height: calc(100vh - 56px);
+            padding: 20px 0;
+            position: fixed;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 0;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--main-green);
+            color: #fff;
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sub-menu {
+            padding-left: 15px;
+            list-style: none;
+            background-color: #c0d8c4;
+        }
+
+        .sub-menu li {
+            padding: 8px 10px 8px 35px;
+            position: relative;
+        }
+
+        .sub-menu li:before {
+            content: "•";
+            color: #666;
+            position: absolute;
+            left: 20px;
+        }
+
+        .sub-menu li a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logout-sidebar-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .logout-sidebar-btn i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            max-width: calc(100% - var(--sidebar-width));
+            min-height: calc(100vh - 56px);
+            background-color: #fff;
+            border-radius: 10px;
+            margin-top: 15px;
+            margin-right: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            background: none;
+            padding: 0;
+            color: var(--main-green);
+            font-weight: 500;
+        }
+
+        .breadcrumb a {
+            color: var(--main-green);
+            text-decoration: none;
+        }
+
+        .welcome-section {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h1 {
+            color: var(--main-green);
+            font-size: 28px;
+            margin-bottom: 0;
+        }
+
+        .welcome-text h2 {
+            color: var(--main-green);
+            font-size: 36px;
+            margin-top: 0;
+        }
+
+        .profile-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: var(--main-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-image img {
+            width: 88%;
+            height: 88%;
+            object-fit: contain;
+        }
+
+        .form-control {
+            border-radius: 20px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-logout-main {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .btn-logout-main:hover {
+            background-color: var(--dark-green);
+        }
+
+        footer {
+            text-align: left;
+            font-size: 12px;
+            color: #666;
+            padding: 0 15px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        @* Escapando el @ en la directiva media con @@ para evitar el error CS0103 *@
+        @@media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-th"></i>
+                    </div>
+                    G&R
+                </div>
+                <div class="user-info">
+                    <div class="user-details">
+                        <span class="user-name">Nicanor Guevara Extremadoiro</span>
+                        <span class="user-email">nicanorguevara332@gmail.com</span>
+                    </div>
+                    <div class="profile-pic">
+                        <img src="https://via.placeholder.com/32" alt="Profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="sidebar">
+                <ul class="sidebar-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fa fa-home"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa fa-clipboard-list"></i>
+                            <span>Pedidos</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="#">Línea</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa fa-box"></i>
+                            <span>Productos</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="sidebar-footer">
+                    <button class="logout-sidebar-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                    <footer>
+                        <p>© 2025 G&R Industrias Plásticas</p>
+                        <p>S.R.L Todos los derechos</p>
+                        <p>reservados.</p>
+                    </footer>
+                </div>
+            </div>
+
+            <div class="col main-content">
+                <div class="breadcrumb">
+                    <a href="#">Inicio</a>
+                </div>
+
+                <div class="welcome-section">
+                    <div class="welcome-text">
+                        <h1>¡Bienvenido Administrador</h1>
+                        <h2>Nicanor Guevara!</h2>
+                    </div>
+                    <div class="profile-image">
+                        <img src="~/images/beaver-avatar.png" alt="Perfil">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" value="Nicanor Guevara Extremadoiro" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" value="nicanorguevara332@gmail.com" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn-logout-main">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // El submenú de Pedidos aparece abierto por defecto
+            $('.nav-link').click(function () {
+                $(this).next('.sub-menu').slideToggle();
+            });
+        });
+    </script>
+</body>
+</html>
