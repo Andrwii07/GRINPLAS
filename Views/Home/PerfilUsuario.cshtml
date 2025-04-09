@@ -1,0 +1,187 @@
+@model GRINPLAS.Models.UserProfileViewModel
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil del Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+        }
+        .header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .back-button {
+            color: #999;
+            text-decoration: none;
+            font-size: 22px;
+            margin-right: 20px;
+        }
+        .header-title {
+            color: #999;
+            font-size: 18px;
+            text-align: center;
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #4CAF50;
+            position: relative;
+        }
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .status-indicator {
+            width: 30px;
+            height: 30px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            border: 3px solid white;
+        }
+        .form-group {
+            margin: 10px 20px;
+            position: relative;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+        .edit-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .history-button {
+            display: block;
+            padding: 12px 15px;
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            background-color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .logout-button {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            background-color: #4CAF50;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            margin: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .password-field {
+            letter-spacing: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#" class="back-button">←</a>
+            <h1 class="header-title">PERFIL</h1>
+        </div>
+        
+        <div class="profile-section">
+            <div class="profile-image">
+                <img src="/api/placeholder/120/120" alt="Profile Image" class="profile-avatar">
+                <div class="status-indicator"></div>
+            </div>
+        </div>
+        
+        <form asp-action="UpdateProfile" asp-controller="Account" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" asp-for="FullName" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" class="form-control" asp-for="Email" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="tel" class="form-control" asp-for="LocalPhone" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="tel" class="form-control" asp-for="MobilePhone" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control password-field" asp-for="Password" value="••••••" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <button type="submit" id="save-button" style="display:none;">Guardar Cambios</button>
+        </form>
+        
+        <a href="@Url.Action("OrderHistory", "Orders")" class="history-button">Ver Historial de Pedidos</a>
+        
+        <form asp-action="Logout" asp-controller="Account" method="post">
+            <button type="submit" class="logout-button">Cerrar Sesión</button>
+        </form>
+    </div>
+
+    <script>
+        function makeEditable(button) {
+            const input = button.previousElementSibling;
+            input.readOnly = false;
+            input.focus();
+            
+            document.getElementById('save-button').style.display = 'block';
+            
+            if (input.type === 'password') {
+                input.value = '';
+                input.classList.remove('password-field');
+            }
+        }
+    </script>
+</body>
+</html>

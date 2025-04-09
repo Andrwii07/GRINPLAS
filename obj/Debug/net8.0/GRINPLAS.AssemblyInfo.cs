@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GRINPLAS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7d8adcd1cfa4f37d6891e06541efcdccb469ce1f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70906f3a65e1b88729ad1625ee84f3a89b5df7c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("GRINPLAS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GRINPLAS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
