@@ -1,0 +1,263 @@
+@model GRINPLAS.Models.UserProfileViewModel
+
+<div class="profile-button" id="profileButton">
+    <img src="@(Model?.ProfileImage ?? "/images/default-avatar.png")" alt="Perfil" class="profile-icon" onerror="this.src='/images/default-avatar.png'">
+</div>
+
+<div class="profile-dropdown" id="profileDropdown">
+    <div class="container">
+        <div class="header">
+            <button type="button" class="close-button" id="closeProfileBtn">×</button>
+            <h1 class="header-title">PERFIL</h1>
+        </div>
+        
+        <div class="profile-section">
+            <div class="profile-image">
+                <img src="@(Model?.ProfileImage ?? "/images/default-avatar.png")" alt="Profile Image" class="profile-avatar" onerror="this.src='/images/default-avatar.png'">
+                <label for="profile-image-upload" class="camera-icon">📷</label>
+                <input type="file" id="profile-image-upload" style="display:none">
+            </div>
+        </div>
+        
+        <form asp-action="UpdateProfile" asp-controller="Account" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" asp-for="FullName" value="@Model?.FullName" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" class="form-control" asp-for="Email" value="@Model?.Email" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="tel" class="form-control" asp-for="LocalPhone" value="@Model?.LocalPhone" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="tel" class="form-control" asp-for="MobilePhone" value="@Model?.MobilePhone" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control password-field" asp-for="Password" value="•••••" readonly>
+                <button type="button" class="edit-button" onclick="makeEditable(this)">✎</button>
+            </div>
+            
+            <button type="submit" id="save-button" style="display:none;" class="action-button green-button">Guardar Cambios</button>
+        </form>
+        
+        <a href="@Url.Action("OrderHistory", "Orders")" class="action-button outline-button">Ver Historial de Pedidos</a>
+        
+        <form asp-action="Logout" asp-controller="Account" method="post">
+            <button type="submit" class="action-button green-button">Cerrar Sesión</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Estilos para el botón de perfil */
+    .profile-button {
+        position: relative;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 15px;
+    }
+    
+    .profile-icon {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    /* Estilos para el desplegable de perfil */
+    .profile-dropdown {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        max-width: 400px;
+        height: 100vh;
+        background-color: white;
+        z-index: 1000;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    .profile-dropdown.show {
+        right: 0;
+    }
+    
+    .container {
+        padding: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .header {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 10;
+    }
+    
+    .close-button {
+        color: #999;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 20px;
+    }
+    
+    .header-title {
+        color: #999;
+        font-size: 18px;
+        text-align: center;
+        flex-grow: 1;
+        margin: 0;
+    }
+    
+    .profile-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #4CAF50;
+        position: relative;
+    }
+    
+    .profile-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .camera-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 30px;
+        height: 30px;
+        background-color: #4CAF50;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid white;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    
+    .form-group {
+        margin: 10px 20px;
+        position: relative;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+        box-sizing: border-box;
+    }
+    
+    .edit-button {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .action-button {
+        display: block;
+        padding: 12px 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        width: calc(100% - 40px);
+        box-sizing: border-box;
+    }
+    
+    .green-button {
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+    }
+    
+    .outline-button {
+        color: #4CAF50;
+        border: 1px solid #4CAF50;
+        background-color: white;
+    }
+    
+    .password-field {
+        letter-spacing: 4px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileButton = document.getElementById('profileButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const closeProfileBtn = document.getElementById('closeProfileBtn');
+        
+        // Abrir el perfil al hacer clic en el botón
+        profileButton.addEventListener('click', function() {
+            profileDropdown.classList.add('show');
+        });
+        
+        // Cerrar el perfil al hacer clic en el botón de cerrar
+        closeProfileBtn.addEventListener('click', function() {
+            profileDropdown.classList.remove('show');
+        });
+        
+        // Cerrar el perfil al hacer clic fuera de él
+        document.addEventListener('click', function(event) {
+            if (!profileDropdown.contains(event.target) && event.target !== profileButton && !profileButton.contains(event.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+    });
+    
+    function makeEditable(button) {
+        const input = button.previousElementSibling;
+        input.readOnly = false;
+        input.focus();
+        
+        document.getElementById('save-button').style.display = 'block';
+        
+        if (input.type === 'password') {
+            input.value = '';
+            input.classList.remove('password-field');
+        }
+    }
+</script>
